@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>login</title>
+<script type="text/javascript">
+var queryParams = (function(query) {
+    if (query == "") return {};
+    var result = {};
+    for (var i = 0; i < query.length; ++i)
+    {
+        var param = query[i].split('=', 2);
+        if (param.length == 1)
+        	result[ param[0] ] = "";
+        else
+        	result[ param[0] ] = decodeURIComponent(param[1].replace(/\+/g, " "));
+    }
+    return result;
+})(window.location.search.substr(1).split('&'));
+
+window.onload = function(){
+    document.getElementById("state").value = queryParams["state"];
+};
+
+</script>
+</head>
+<body>
+<form action="/signup" method="post">
+  <p>
+    <label>User ID</label><br>
+    <input type="text" id="userid">
+  </p>
+  <p>
+    <label>Password</label><br>
+    <input type="password" id="password">
+  </p>
+  <p>
+    <label>state</label><br>
+    <input type="text" id="state">
+  </p>
+  <p>
+    <button>Sign up</button>
+    <button type="reset">Reset form</button>
+  </p>
+</form></body>
+</html>
