@@ -1,9 +1,7 @@
 package info.serdroid.orpheus.rest;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import info.serdroid.orpheus.rest.AuthorizationRequest;
 import info.serdroid.orpheus.rest.AuthorizationRequest.Builder;
 
@@ -15,7 +13,7 @@ public class AuthorizationRequestTest {
 		AuthorizationRequest builded = builder.setClientId("1234567890").build();
 		AuthorizationRequest expected = new AuthorizationRequest();
 		expected.setClientId("1234567890");
-		assertEquals(expected, builded);
+		assertThat(builded).isEqualTo(expected);
 	}
 
 	@Test (expected = java.lang.RuntimeException.class)
@@ -24,7 +22,7 @@ public class AuthorizationRequestTest {
 		AuthorizationRequest builded = builder.setResponseType("code").build();
 		AuthorizationRequest expected = new AuthorizationRequest();
 		expected.setResponseType("code");
-		assertEquals(expected, builded);
+		assertThat(builded).isEqualTo(expected);
 	}
 
 	@Test
@@ -34,7 +32,7 @@ public class AuthorizationRequestTest {
 		AuthorizationRequest expected = new AuthorizationRequest();
 		expected.setResponseType("code");
 		expected.setClientId("1234567890");
-		assertEquals(expected, builded);
+		assertThat(builded).isEqualTo(expected);
 	}
 
 	@Test (expected = java.lang.RuntimeException.class)
@@ -44,7 +42,7 @@ public class AuthorizationRequestTest {
 		AuthorizationRequest expected = new AuthorizationRequest();
 		expected.setResponseType("ode");
 		expected.setClientId("1234567890");
-		assertEquals(expected, builded);
+		assertThat(builded).isEqualTo(expected);
 	}
 
 	@Test
@@ -57,7 +55,7 @@ public class AuthorizationRequestTest {
 		expected.setResponseType("code");
 		expected.setClientId("1234567890");
 		expected.setRedirectURI("../login.html");
-		assertEquals(expected, builded);
+		assertThat(builded).isEqualTo(expected);
 	}
 
 }
