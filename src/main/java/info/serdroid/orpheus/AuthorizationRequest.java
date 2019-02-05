@@ -1,4 +1,4 @@
-package info.serdroid.orpheus.rest;
+package info.serdroid.orpheus;
 
 import java.util.Objects;
 

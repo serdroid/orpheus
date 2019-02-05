@@ -1,9 +1,11 @@
-package info.serdroid.orpheus.rest;
+package info.serdroid.orpheus;
 
 import org.junit.Test;
+
+import info.serdroid.orpheus.AuthorizationRequest;
+import info.serdroid.orpheus.AuthorizationRequest.Builder;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import info.serdroid.orpheus.rest.AuthorizationRequest;
-import info.serdroid.orpheus.rest.AuthorizationRequest.Builder;
 
 public class AuthorizationRequestTest {
 
