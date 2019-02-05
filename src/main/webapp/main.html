@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Orpheus Client App</title>
+<script type="text/javascript">
+var queryParams = (function(query) {
+    if (query == "") return {};
+    var result = {};
+    for (var i = 0; i < query.length; ++i)
+    {
+        var param = query[i].split('=', 2);
+        if (param.length == 1)
+        	result[ param[0] ] = "";
+        else
+        	result[ param[0] ] = decodeURIComponent(param[1].replace(/\+/g, " "));
+    }
+    return result;
+})(window.location.search.substr(1).split('&'));
+
+</script>
+
+</head>
+<body>
+<p>
+welcome to client application
+</p>
+  <p>
+    <label>User ID</label><br>
+    <input type="text" id="userid">
+  </p>
+  <p>
+    <label>User ID</label><br>
+    <input type="text" id="username">
+  </p>
+</body>
+<script type="text/javascript">
+document.getElementById("userid").value = queryParams["userid"];
+document.getElementById("username").value = queryParams["username"];
+</script>
+</html>
