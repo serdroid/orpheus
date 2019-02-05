@@ -20,23 +20,28 @@ var queryParams = (function(query) {
 
 window.onload = function(){
     document.getElementById("state").value = queryParams["state"];
+    document.getElementById("redirect_uri").value = queryParams["redirect_uri"];
 };
 
 </script>
 </head>
 <body>
-<form action="/signup" method="post">
+<form action="/orpheus/rest/signup" method="post">
   <p>
     <label>User ID</label><br>
-    <input type="text" id="userid">
+    <input type="text" id="userid" name="userid">
   </p>
   <p>
     <label>Password</label><br>
-    <input type="password" id="password">
+    <input type="password" id="password" name="password">
   </p>
   <p>
     <label>state</label><br>
-    <input type="text" id="state">
+    <input type="text" id="state" name="state">
+  </p>
+  <p>
+    <label>redirect_uri</label><br>
+    <input type="text" id="redirect_uri" name="redirect_uri">
   </p>
   <p>
     <button>Sign up</button>
