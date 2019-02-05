@@ -58,4 +58,33 @@ public class AuthorizationRequestTest {
 		assertThat(builded).isEqualTo(expected);
 	}
 
+	@Test
+	public void settingNullShouldNotChange() {
+		Builder builder = new AuthorizationRequest.Builder();
+		AuthorizationRequest builded = builder.setResponseType("code").setClientId("1234567890")
+				.setRedirectURI(null)
+				.build();
+		AuthorizationRequest expected = new AuthorizationRequest();
+		expected.setResponseType("code");
+		expected.setClientId("1234567890");
+		assertThat(builded).isEqualTo(expected);
+	}
+
+	@Test
+	public void setSomeOptionalParametersShouldReturnSetParametersURIString() {
+		Builder builder = new AuthorizationRequest.Builder();
+		AuthorizationRequest builded = builder.setResponseType("code").setClientId("1234567890")
+				.setRedirectURI("www.example.com")
+				.setScope(null)
+				.setState("current")
+				.build();
+		AuthorizationRequest expected = new AuthorizationRequest();
+		expected.setResponseType("code");
+		expected.setClientId("1234567890");
+		expected.setRedirectURI("www.example.com");
+		expected.setState("current");
+		assertThat(builded).isEqualTo(expected);
+		assertThat(builded.toURIString()).isEqualTo("?response_type=code&client_id=1234567890&redirect_uri=www.example.com&state=current");
+	}
+
 }
