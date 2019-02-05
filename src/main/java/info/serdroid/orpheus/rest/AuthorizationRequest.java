@@ -15,13 +15,13 @@ public class AuthorizationRequest {
 
 	public String toURIString() {
 		StringBuilder buffer = new StringBuilder(128);
-		addToURIString("?responseType=", responseType, buffer);
-		addToURIString("&clientId=", clientId, buffer);
-		addToURIString("&redirectURI=", redirectURI, buffer);
+		addToURIString("?response_type=", responseType, buffer);
+		addToURIString("&client_id=", clientId, buffer);
+		addToURIString("&redirect_uri=", redirectURI, buffer);
 		addToURIString("&scope=", scope, buffer);
 		addToURIString("&state=", state, buffer);
-		addToURIString("&codeChallenge=", codeChallenge, buffer);
-		addToURIString("&codeChallengeMethod=", codeChallengeMethod, buffer);
+		addToURIString("&code_challenge=", codeChallenge, buffer);
+		addToURIString("&code_challenge_method=", codeChallengeMethod, buffer);
 		return buffer.toString();
 	}
 
