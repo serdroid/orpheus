@@ -1,18 +1,24 @@
 package info.serdroid.orpheus.rest;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import info.serdroid.orpheus.AuthorizationService;
 import info.serdroid.orpheus.RandomGenerator;
+import info.serdroid.orpheus.TokenRequest;
 
 @ApplicationScoped
 @Path("token")
 public class TokenEndpoint {
 
+	@Inject
+	private AuthorizationService authorizationService;
+	
 	// request parameters
 	/*
 			grant_type=authorization_code  // - Required
@@ -34,6 +40,13 @@ public class TokenEndpoint {
 			@FormParam("redirect_uri") String redirect_uri,
 			@FormParam("code_verifier") String code_verifier ) {
     	// check input
+    	TokenRequest tokenRequest = new TokenRequest.Builder().setGrantType(grant_type)
+    	.setClientId(client_id)
+    	.setCode(code)
+    	.setCodeVerifier(code_verifier)
+    	.setRedirectURI(redirect_uri).build();
+    	authorizationService.validateTokenRequest(tokenRequest);
+
     	// generate & return token response
     	String access = RandomGenerator.generateRandomString();
     	TokenResponse tokenResponse = new TokenResponse();
