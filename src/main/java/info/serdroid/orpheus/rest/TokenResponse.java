@@ -6,6 +6,7 @@ public class TokenResponse {
 	private int expires;
 	private String refreshToken;
 	private String scope;
+	
 	public String getAccessToken() {
 		return accessToken;
 	}

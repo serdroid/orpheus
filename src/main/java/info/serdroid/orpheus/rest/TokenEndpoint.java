@@ -51,8 +51,9 @@ public class TokenEndpoint {
     	String access = RandomGenerator.generateRandomString();
     	TokenResponse tokenResponse = new TokenResponse();
     	tokenResponse.setAccessToken(access);
-    	tokenResponse.setTokenType("access-ro");
+    	tokenResponse.setTokenType("bearer");
     	System.out.println("TokenEndpoint : returning access token " + tokenResponse.getAccessToken());
+    	authorizationService.addAccessToken(tokenResponse);
     	return tokenResponse;
     }
 }
