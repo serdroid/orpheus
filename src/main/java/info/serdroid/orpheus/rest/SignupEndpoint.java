@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -13,11 +14,15 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
+import info.serdroid.orpheus.AuthorizationRequest;
+import info.serdroid.orpheus.AuthorizationService;
 import info.serdroid.orpheus.RandomGenerator;
 
 @ApplicationScoped
 @Path("signup")
 public class SignupEndpoint {
+	@Inject
+	private AuthorizationService authorizationService;
 
 	
     @POST
@@ -25,16 +30,23 @@ public class SignupEndpoint {
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     public Response signup(@FormParam("userid") String userid, 
 			@FormParam("password") String password,
-			@FormParam("redirect_uri") String redirect_uri,
-			@FormParam("state") String state ) {
-    	// authenticate user
-    	// generate authorization code
-    	String code = RandomGenerator.generateRandomString();
+			@FormParam("code") String code ) {
+    	// TODO authenticate user
+    	AuthorizationRequest authorizationRequest = authorizationService.getAndRemoveAuthorizationRequest(code);
+    	if( authorizationRequest == null) {
+    		// TODO redirect to login page ( or do something else ??? )
+    		return Response.serverError().build();
+    	}
+    	// generate new authorization code
+    	String authorizationCode = RandomGenerator.generateRandomString();
+    	authorizationService.addAuthorizationRequest(authorizationCode, authorizationRequest);
+
     	// redirect to redirect_uri with code & state ( if exists )
     	URI location;
 		try {
-			System.out.println("SignupEndpoint : redirecting to " + redirect_uri);
-			location = new URI(redirect_uri + "?code=" + code + "&state=" + state);
+			System.out.println("SignupEndpoint : redirecting to " + authorizationRequest.getRedirectURI());
+			location = new URI(authorizationRequest.getRedirectURI() + "?code=" + authorizationCode + 
+					"&state=" + authorizationRequest.getState());
 			ResponseBuilder respBuilder = Response.status(Status.FOUND).location(location);
 	    	return respBuilder.build();
 		} catch (URISyntaxException e) {
