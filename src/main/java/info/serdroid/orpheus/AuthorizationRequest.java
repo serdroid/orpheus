@@ -13,6 +13,28 @@ public class AuthorizationRequest {
 
 	AuthorizationRequest() {}
 
+	public String getResponseType() {
+		return responseType;
+	}
+	public String getClientId() {
+		return clientId;
+	}
+	public String getRedirectURI() {
+		return redirectURI;
+	}
+	public String getScope() {
+		return scope;
+	}
+	public String getState() {
+		return state;
+	}
+	public String getCodeChallenge() {
+		return codeChallenge;
+	}
+	public String getCodeChallengeMethod() {
+		return codeChallengeMethod;
+	}
+
 	public String toURIString() {
 		StringBuilder buffer = new StringBuilder(128);
 		addToURIString("?response_type=", responseType, buffer);
