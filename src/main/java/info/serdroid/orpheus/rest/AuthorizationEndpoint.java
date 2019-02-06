@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,11 +15,16 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import info.serdroid.orpheus.AuthorizationRequest;
+import info.serdroid.orpheus.AuthorizationService;
+import info.serdroid.orpheus.RandomGenerator;
 
 @ApplicationScoped
 @Path("authorize")
 public class AuthorizationEndpoint {
 
+	@Inject
+	private AuthorizationService authorizationService;
+	
 	// response_type
 	// client_id
 	// redirect_uri
@@ -46,10 +52,12 @@ public class AuthorizationEndpoint {
     			.setCodeChallenge(code_challenge)
     			.setCodeChallengeMethod(code_challenge_method)
     			.build();
+    	String authorizationCode = RandomGenerator.generateRandomString();
+    	authorizationService.addAuthorizationRequest(authorizationCode, authorizationRequest);
     	URI location;
 		try {
 			System.out.println("AuthorizationEndpoint : redirecting to login.html");
-			location = new URI("../login.html" + authorizationRequest.toURIString());
+			location = new URI("../login.html?code=" + authorizationCode);
 			ResponseBuilder respBuilder = Response.status(Status.FOUND).location(location);
 	    	return respBuilder.build();
 		} catch (URISyntaxException e) {

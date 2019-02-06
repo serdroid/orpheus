@@ -19,7 +19,7 @@ var queryParams = (function(query) {
 })(window.location.search.substr(1).split('&'));
 
 window.onload = function(){
-    document.getElementById("state").value = queryParams["state"];
+    document.getElementById("code").value = queryParams["code"];
     document.getElementById("redirect_uri").value = queryParams["redirect_uri"];
 };
 
@@ -37,11 +37,7 @@ window.onload = function(){
   </p>
   <p>
     <label>state</label><br>
-    <input type="text" id="state" name="state">
-  </p>
-  <p>
-    <label>redirect_uri</label><br>
-    <input type="text" id="redirect_uri" name="redirect_uri">
+    <input type="text" id="code" name="code">
   </p>
   <p>
     <button>Sign up</button>
