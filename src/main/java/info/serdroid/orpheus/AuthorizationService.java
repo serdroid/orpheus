@@ -40,4 +40,9 @@ public class AuthorizationService {
 	public TokenResponse getAccessToken(String accessToken) {
 		return accessTokens.get(accessToken);
 	}
+
+	public void validateAccessToken(String accessToken) {
+		
+	}
+
 }

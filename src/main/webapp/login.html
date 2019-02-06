@@ -20,12 +20,12 @@ var queryParams = (function(query) {
 
 window.onload = function(){
     document.getElementById("code").value = queryParams["code"];
-    document.getElementById("redirect_uri").value = queryParams["redirect_uri"];
 };
 
 </script>
 </head>
 <body>
+<h3>Orpheus Authorization Server</h3>
 <form action="/orpheus/rest/signup" method="post">
   <p>
     <label>User ID</label><br>
