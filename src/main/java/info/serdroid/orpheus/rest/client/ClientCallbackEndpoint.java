@@ -20,8 +20,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
+import info.serdroid.orpheus.TokenResponse;
 import info.serdroid.orpheus.rest.ResourceResponse;
-import info.serdroid.orpheus.rest.TokenResponse;
 
 @ApplicationScoped
 @Path("callback")
@@ -54,7 +54,8 @@ public class ClientCallbackEndpoint {
 //        formParams.add("client_id", ""); // ??? is client id required
         formParams.add("redirect_uri", "http://localhost:8081/orpheus/rest/callback");
         Response response = client.target("http://localhost:8080/orpheus/rest/token").request().post(Entity.form(formParams));
-        TokenResponse tokenResponse = response.readEntity(TokenResponse.class);
+        
+        String accessToken = response.readEntity(String.class);
     	// token response
     	/*
 		{
@@ -71,8 +72,9 @@ public class ClientCallbackEndpoint {
         String userId = "user-123";
     	client = ClientBuilder.newClient();
         formParams = new MultivaluedHashMap<>();
-        formParams.add("access_token", tokenResponse.getAccessToken());
+        formParams.add("access_token", accessToken);
         formParams.add("userid", userId);
+        System.out.println("requesting resource with token = " + accessToken);
         response = client.target("http://localhost:8080/orpheus/rest/resource").request().post(Entity.form(formParams));
     	ResourceResponse resourceResponse = response.readEntity(ResourceResponse.class);
     	// redirect to main.html with obtained resource data

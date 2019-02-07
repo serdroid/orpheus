@@ -9,8 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import info.serdroid.orpheus.AuthorizationService;
-import info.serdroid.orpheus.RandomGenerator;
 import info.serdroid.orpheus.TokenRequest;
+import info.serdroid.orpheus.TokenResponse;
 
 @ApplicationScoped
 @Path("token")
@@ -34,7 +34,7 @@ public class TokenEndpoint {
     @POST
     @Consumes(javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED)    
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    public TokenResponse accessToken(@FormParam("grant_type") String grant_type, 
+    public String accessToken(@FormParam("grant_type") String grant_type, 
 			@FormParam("code") String code,
 	    	@FormParam("client_id") String client_id,
 			@FormParam("redirect_uri") String redirect_uri,
@@ -48,12 +48,9 @@ public class TokenEndpoint {
     	authorizationService.validateTokenRequest(tokenRequest);
 
     	// generate & return token response
-    	String access = RandomGenerator.generateRandomString();
-    	TokenResponse tokenResponse = new TokenResponse();
-    	tokenResponse.setAccessToken(access);
-    	tokenResponse.setTokenType("bearer");
+    	TokenResponse tokenResponse = authorizationService.generateTokenResponse();
     	System.out.println("TokenEndpoint : returning access token " + tokenResponse.getAccessToken());
     	authorizationService.addAccessToken(tokenResponse);
-    	return tokenResponse;
+    	return tokenResponse.getAccessToken();
     }
 }
