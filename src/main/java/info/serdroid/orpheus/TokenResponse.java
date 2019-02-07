@@ -1,4 +1,4 @@
-package info.serdroid.orpheus.rest;
+package info.serdroid.orpheus;
 
 public class TokenResponse {
 	private String accessToken;
