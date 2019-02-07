@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import info.serdroid.orpheus.rest.TokenResponse;
-
 @ApplicationScoped
 public class AuthorizationService {
 	Map<String, AuthorizationRequest> authRequests;
@@ -33,6 +31,14 @@ public class AuthorizationService {
 		
 	}
 	
+	public TokenResponse generateTokenResponse() { 
+		String access = RandomGenerator.generateRandomString();
+		TokenResponse tokenResponse = new TokenResponse();
+		tokenResponse.setAccessToken(access);
+		tokenResponse.setTokenType("bearer");
+		return tokenResponse;
+	}
+	
 	public void addAccessToken(TokenResponse token) {
 		accessTokens.put(token.getAccessToken(), token);
 	}
@@ -42,7 +48,10 @@ public class AuthorizationService {
 	}
 
 	public void validateAccessToken(String accessToken) {
-		
+		TokenResponse tokenResponse = accessTokens.get(accessToken);
+		if ( null == tokenResponse ) {
+			throw new RuntimeException("Invalid Access Token");
+		}
 	}
 
 }
