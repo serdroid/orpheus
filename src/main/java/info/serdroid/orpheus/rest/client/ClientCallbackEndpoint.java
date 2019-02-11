@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import info.serdroid.orpheus.rest.ResourceResponse;
-import info.serdroid.orpheus.rest.SignupEndpoint;
 
 @ApplicationScoped
 @Path("callback")
