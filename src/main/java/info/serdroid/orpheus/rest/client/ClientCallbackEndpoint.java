@@ -20,15 +20,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
-import info.serdroid.orpheus.TokenResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.serdroid.orpheus.rest.ResourceResponse;
+import info.serdroid.orpheus.rest.SignupEndpoint;
 
 @ApplicationScoped
 @Path("callback")
 public class ClientCallbackEndpoint {
-
-	// code
-	// state
+	private static final Logger logger = LoggerFactory.getLogger(ClientCallbackEndpoint.class);
 
     @GET
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
@@ -74,7 +75,7 @@ public class ClientCallbackEndpoint {
         formParams = new MultivaluedHashMap<>();
         formParams.add("access_token", accessToken);
         formParams.add("userid", userId);
-        System.out.println("requesting resource with token = " + accessToken);
+        logger.debug("requesting resource with token = {}", accessToken);
         response = client.target("http://localhost:8080/orpheus/rest/resource").request().post(Entity.form(formParams));
     	ResourceResponse resourceResponse = response.readEntity(ResourceResponse.class);
     	// redirect to main.html with obtained resource data

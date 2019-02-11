@@ -14,6 +14,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.serdroid.orpheus.AuthorizationRequest;
 import info.serdroid.orpheus.AuthorizationService;
 import info.serdroid.orpheus.RandomGenerator;
@@ -21,6 +24,7 @@ import info.serdroid.orpheus.RandomGenerator;
 @ApplicationScoped
 @Path("authorize")
 public class AuthorizationEndpoint {
+	private static final Logger logger = LoggerFactory.getLogger(AuthorizationEndpoint.class);
 
 	@Inject
 	private AuthorizationService authorizationService;
@@ -56,7 +60,7 @@ public class AuthorizationEndpoint {
     	authorizationService.addAuthorizationRequest(authorizationCode, authorizationRequest);
     	URI location;
 		try {
-			System.out.println("AuthorizationEndpoint : redirecting to login.html");
+			logger.debug("AuthorizationEndpoint : redirecting to login.html");
 			location = new URI("../login.html?code=" + authorizationCode);
 			ResponseBuilder respBuilder = Response.status(Status.FOUND).location(location);
 	    	return respBuilder.build();

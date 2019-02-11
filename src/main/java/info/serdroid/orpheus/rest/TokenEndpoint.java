@@ -8,6 +8,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.serdroid.orpheus.AuthorizationService;
 import info.serdroid.orpheus.TokenRequest;
 import info.serdroid.orpheus.TokenResponse;
@@ -15,6 +18,7 @@ import info.serdroid.orpheus.TokenResponse;
 @ApplicationScoped
 @Path("token")
 public class TokenEndpoint {
+	private static final Logger logger = LoggerFactory.getLogger(TokenEndpoint.class);
 
 	@Inject
 	private AuthorizationService authorizationService;
@@ -49,7 +53,7 @@ public class TokenEndpoint {
 
     	// generate & return token response
     	TokenResponse tokenResponse = authorizationService.generateTokenResponse();
-    	System.out.println("TokenEndpoint : returning access token " + tokenResponse.getAccessToken());
+    	logger.debug("TokenEndpoint : returning access token {}", tokenResponse.getAccessToken());
     	authorizationService.addAccessToken(tokenResponse);
     	return tokenResponse.getAccessToken();
     }

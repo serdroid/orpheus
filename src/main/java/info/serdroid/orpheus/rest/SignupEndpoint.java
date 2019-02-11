@@ -14,6 +14,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.serdroid.orpheus.AuthorizationRequest;
 import info.serdroid.orpheus.AuthorizationService;
 import info.serdroid.orpheus.RandomGenerator;
@@ -21,6 +24,8 @@ import info.serdroid.orpheus.RandomGenerator;
 @ApplicationScoped
 @Path("signup")
 public class SignupEndpoint {
+	private static final Logger logger = LoggerFactory.getLogger(SignupEndpoint.class);
+
 	@Inject
 	private AuthorizationService authorizationService;
 
@@ -44,7 +49,7 @@ public class SignupEndpoint {
     	// redirect to redirect_uri with code & state ( if exists )
     	URI location;
 		try {
-			System.out.println("SignupEndpoint : redirecting to " + authorizationRequest.getRedirectURI());
+			logger.debug("SignupEndpoint : redirecting to {}", authorizationRequest.getRedirectURI());
 			location = new URI(authorizationRequest.getRedirectURI() + "?code=" + authorizationCode + 
 					"&state=" + authorizationRequest.getState());
 			ResponseBuilder respBuilder = Response.status(Status.FOUND).location(location);
