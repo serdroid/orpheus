@@ -7,6 +7,9 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +41,7 @@ public class TokenEndpoint {
     @POST
     @Consumes(javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED)    
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    public String accessToken(@FormParam("grant_type") String grant_type, 
+    public Response accessToken(@FormParam("grant_type") String grant_type, 
 			@FormParam("code") String code,
 	    	@FormParam("client_id") String client_id,
 			@FormParam("redirect_uri") String redirect_uri,
@@ -55,6 +58,9 @@ public class TokenEndpoint {
     	TokenResponse tokenResponse = authorizationService.generateTokenResponse();
     	logger.debug("TokenEndpoint : returning access token {}", tokenResponse.getAccessToken());
     	authorizationService.addAccessToken(tokenResponse);
-    	return tokenResponse.getAccessToken();
+    	ResponseBuilder responseBuilder = Response.ok(tokenResponse.getAccessToken());
+    	responseBuilder.cacheControl(CacheControl.valueOf("no-store"));
+    	responseBuilder.header("Pragma", "no-cache");
+    	return responseBuilder.build();
     }
 }

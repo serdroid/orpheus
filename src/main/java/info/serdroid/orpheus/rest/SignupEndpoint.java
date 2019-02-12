@@ -10,6 +10,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -53,6 +54,8 @@ public class SignupEndpoint {
 			location = new URI(authorizationRequest.getRedirectURI() + "?code=" + authorizationCode + 
 					"&state=" + authorizationRequest.getState());
 			ResponseBuilder respBuilder = Response.status(Status.FOUND).location(location);
+	    	respBuilder.cacheControl(CacheControl.valueOf("no-store"));
+	    	respBuilder.header("Pragma", "no-cache");
 	    	return respBuilder.build();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
