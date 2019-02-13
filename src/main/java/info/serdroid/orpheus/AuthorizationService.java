@@ -28,7 +28,16 @@ public class AuthorizationService {
 	}
 	
 	public void validateTokenRequest(TokenRequest tokenRequest) {
-		
+		AuthorizationRequest authorizationRequest = getAndRemoveAuthorizationRequest(tokenRequest.getCode());
+		if (authorizationRequest == null) {
+			throw new RuntimeException("wrong authorization code");
+		}
+		if ( ! authorizationRequest.getClientId().equals(tokenRequest.getClientId()) ) {
+			throw new RuntimeException("wrong client id");
+		}
+		if ( ! authorizationRequest.getRedirectURI().equals(tokenRequest.getRedirectURI()) ) {
+			throw new RuntimeException("wrong redirect uri");
+		}
 	}
 	
 	public TokenResponse generateTokenResponse() { 

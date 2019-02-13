@@ -11,6 +11,22 @@ public class TokenRequest {
 
 	TokenRequest() {}
 
+	public String getGrantType() {
+		return grantType;
+	}
+	public String getClientId() {
+		return clientId;
+	}
+	public String getRedirectURI() {
+		return redirectURI;
+	}
+	public String getCode() {
+		return code;
+	}
+	public String getCodeVerifier() {
+		return codeVerifier;
+	}
+
 	public String toURIString() {
 		StringBuilder buffer = new StringBuilder(128);
 		addToURIString("?grant_type=", grantType, buffer);
