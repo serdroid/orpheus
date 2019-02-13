@@ -51,8 +51,9 @@ public class ClientCallbackEndpoint {
         MultivaluedMap<String, String> formParams = new MultivaluedHashMap<>();
         formParams.add("grant_type", "authorization_code");
         formParams.add("code", code);
-//        formParams.add("client_id", ""); // ??? is client id required
-        formParams.add("redirect_uri", "http://localhost:8081/orpheus/rest/callback");
+        formParams.add("client_id", "123");
+        formParams.add("redirect_uri", "http://localhost:8080/orpheus/rest/callback");
+        logger.debug("requesting access token with authorization code = {}", code);
         Response response = client.target("http://localhost:8080/orpheus/rest/token").request().post(Entity.form(formParams));
         
         String accessToken = response.readEntity(String.class);
@@ -72,10 +73,11 @@ public class ClientCallbackEndpoint {
         String userId = "user-123";
     	client = ClientBuilder.newClient();
         formParams = new MultivaluedHashMap<>();
-        formParams.add("access_token", accessToken);
         formParams.add("userid", userId);
         logger.debug("requesting resource with token = {}", accessToken);
-        response = client.target("http://localhost:8080/orpheus/rest/resource").request().post(Entity.form(formParams));
+        response = client.target("http://localhost:8080/orpheus/rest/resource").request()
+				.header("Authorization", "Bearer " + accessToken)
+        		.post(Entity.form(formParams));
     	ResourceResponse resourceResponse = response.readEntity(ResourceResponse.class);
     	// redirect to main.html with obtained resource data
     	URI location;

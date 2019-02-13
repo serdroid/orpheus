@@ -66,9 +66,9 @@ public class EndpointTest {
 	public void authorizationToResourceRequestCycle() throws MalformedURLException, UnsupportedEncodingException {
 		// authorize request
 		Client client = ClientBuilder.newClient();
-		String redirectUri = contextPath + "rest/callback&state=login";
+		String redirectUri = contextPath + "rest/callback";
 		String userId = "user-123";
-		Response response = client.target(contextPath + "rest/authorize?response_type=code&client_id=123&redirect_uri=" + redirectUri)
+		Response response = client.target(contextPath + "rest/authorize?response_type=code&client_id=123&state=login&redirect_uri=" + redirectUri)
 				.property(ClientProperties.FOLLOW_REDIRECTS, Boolean.FALSE)
 				.request().get();
 		assertThat(response.getStatus()).isEqualTo(302);
@@ -106,11 +106,12 @@ public class EndpointTest {
 		// resource request with access token
 		String accessToken = response.readEntity(String.class);
         formParams = new MultivaluedHashMap<>();
-        formParams.add("access_token", accessToken);
         formParams.add("client_id", "123");
         formParams.add("userid", userId);
 		response = client.target(contextPath + "rest/resource")
-				.request().post(Entity.form(formParams));
+				.request()
+				.header("Authorization", "Bearer " + accessToken)
+				.post(Entity.form(formParams));
 		
 		ResourceResponse resourceResponse = response.readEntity(ResourceResponse.class);
 		assertThat(resourceResponse.getUserName()).isEqualTo("ali veli");

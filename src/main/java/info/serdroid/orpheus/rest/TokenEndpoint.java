@@ -26,16 +26,15 @@ public class TokenEndpoint {
 	@Inject
 	private AuthorizationService authorizationService;
 	
-	// request parameters
 	/*
 			grant_type=authorization_code  // - Required
 			&code={Authorization Code}     // - Required
-			&client_id={Client ID}		   // - Required
+			&client_id={Client ID}		   // - REQUIRED, if the client is not 
+										   //   authenticating with the authorization server (rfc6749)
 			&redirect_uri={Redirect URI}   // - Required if the authorization
 			                               //   request included 'redirect_uri'.
 			&code_verifier={Verifier}      // - Required if the authorization
-			                               //   request included
-			                               //   'code_challenge'.
+			                               //   request included 'code_challenge'.
 	*/
 	
     @POST
@@ -52,7 +51,7 @@ public class TokenEndpoint {
     	.setCode(code)
     	.setCodeVerifier(code_verifier)
     	.setRedirectURI(redirect_uri).build();
-    	authorizationService.validateTokenRequest(tokenRequest);
+		authorizationService.validateTokenRequest(tokenRequest);
 
     	// generate & return token response
     	TokenResponse tokenResponse = authorizationService.generateTokenResponse();

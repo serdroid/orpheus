@@ -50,7 +50,8 @@ public class SignupEndpoint {
     	// redirect to redirect_uri with code & state ( if exists )
     	URI location;
 		try {
-			logger.debug("SignupEndpoint : redirecting to {}", authorizationRequest.getRedirectURI());
+			logger.debug("SignupEndpoint : redirecting to {} with authorization code = {}", 
+					authorizationRequest.getRedirectURI(),  authorizationCode);
 			location = new URI(authorizationRequest.getRedirectURI() + "?code=" + authorizationCode + 
 					"&state=" + authorizationRequest.getState());
 			ResponseBuilder respBuilder = Response.status(Status.FOUND).location(location);
